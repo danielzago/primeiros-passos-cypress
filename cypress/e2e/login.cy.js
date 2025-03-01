@@ -1,3 +1,5 @@
+import userData from '../fixtures/users/userData.json' 
+
 describe('orange HRM tests', () => {
   
   const SelectorList = {
@@ -7,54 +9,61 @@ describe('orange HRM tests', () => {
     userError: "[role='alert']",  
     passWordRequiered: '.oxd-input-group > .oxd-text',
     userNameRequiered: '.oxd-input-group > .oxd-text',
-    sectionTitleTopbar: ".oxd-topbar-header-breadcrumb > .oxd-text"  
-  
+    deshboardGrid: ".orangehrm-dashboard-grid",
+    sectionTitleTopbar: ".oxd-topbar-header-breadcrumb > .oxd-text",
+    
   };
+
+  
+  const linksAcess = {
+    loginlik: '/auth/login',
+    indexhomepage: 'web/index.php/dashboard/index'
+  }
   
   
   it('Login - success', () => {
-    cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
-    cy.get(SelectorList.usernameField).type('Admin')
-    cy.get(SelectorList.passwordField).type('admin123')
+    cy.visit(linksAcess.loginlik)
+    cy.get(SelectorList.usernameField).type(userData.userSucess.username)
+    cy.get(SelectorList.passwordField).type(userData.userSucess.password)
     cy.get(SelectorList.loginButton).click()
-    cy.location('pathname').should('assert','web/index.php/dashboard/index')
-    cy.get(SelectorList.sectionTitleTopbar).contains('Dashboard')
+    cy.location('pathname').should('assert',linksAcess.indexhomepage)
+    cy.get(SelectorList.deshboardGrid)
   })
   it('Login - fail', () => {
-    cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
-    cy.get(SelectorList.usernameField).type('test')
-    cy.get(SelectorList.passwordField).type('test')
+    cy.visit(linksAcess.loginlik)
+    cy.get(SelectorList.usernameField).type(userData.userFail.username)
+    cy.get(SelectorList.passwordField).type(userData.userSucess.password)
     cy.get(SelectorList.loginButton).click()
     cy.get(SelectorList.userError)
   })
   it('Login - fail wrong password', () => {
-    cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
-    cy.get(SelectorList.usernameField).type('Admin')
-    cy.get(SelectorList.passwordField).type('test')
+    cy.visit(linksAcess.loginlik)
+    cy.get(SelectorList.usernameField).type(userData.userSucess.username)
+    cy.get(SelectorList.passwordField).type(userData.userFail.password)
     cy.get(SelectorList.loginButton).click()
     cy.get(SelectorList.userError)
   })
   it('Login - fail wrong Login', () => {
-    cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
-    cy.get(SelectorList.usernameField).type('test')
-    cy.get(SelectorList.passwordField).type('admin123')
+    cy.visit(linksAcess.loginlik)
+    cy.get(SelectorList.usernameField).type(userData.userFail.username)
+    cy.get(SelectorList.passwordField).type(userData.userSucess.password)
     cy.get(SelectorList.loginButton).click()
     cy.get(SelectorList.userError)
   })
   it('Login - fail  Login without loguin name', () => {
-    cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
-    cy.get(SelectorList.passwordField).type('admin123')
+    cy.visit(linksAcess.loginlik)
+    cy.get(SelectorList.passwordField).type(userData.userSucess.password)
     cy.get(SelectorList.loginButton).click()
     cy.get(SelectorList.userNameRequiered)
   })
   it('Login - fail wrong Login without passWord', () => {
-    cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
-    cy.get(SelectorList.usernameField).type('Admin')
+    cy.visit(linksAcess.loginlik)
+    cy.get(SelectorList.usernameField).type(userData.userSucess.username)
     cy.get(SelectorList.loginButton).click()
     cy.get(SelectorList.passWordRequiered)
   })
   it('Login - all black', () => {
-    cy.visit('https://opensource-demo.orangehrmlive.com/web/index.php/auth/login')
+    cy.visit(linksAcess.loginlik)
     cy.get(SelectorList.loginButton).click()
     cy.get(SelectorList.usernameField)
   })
