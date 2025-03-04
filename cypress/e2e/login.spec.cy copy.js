@@ -13,26 +13,16 @@ const menuPages = new menuPage()
 const myInfoPages = new myInfoPage()
 
 
-describe('orange HRM tests', () => {
+describe('Login orange HRM tests', () => {
   
-
-  it('User info update - Success', () => {
-
+  it('check acess invalid', () => {
+    loginPage.acessLoginPage()
+    loginPage.loginwithAnyUser(userData.userFail.username, userData.userFail.password)
+    loginPage.checkAcessInvalid()
+  })
+  it('check acess invalid', () => {
     loginPage.acessLoginPage()
     loginPage.loginwithAnyUser(userData.userSucess.username, userData.userSucess.password)
-    
-
-    dashboardPage.checkDashboard()
-
-    menuPages.acessmyInfo()
-
-    myInfoPages.fieldPersonalDetails('Jorginho', 'Da Coabe')
-    myInfoPages.fillEmployedDetails('employeId', 'otherID', 'driverLicense', '2025-03-01')
-    myInfoPages.selectcountry()
-    myInfoPages.maritalStatus()
-    myInfoPages.bloodtype()
-    myInfoPages.saveSubmit()
-
+    loginPage.checkAcessInvalid()
   })
-  
 })
