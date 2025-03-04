@@ -4,6 +4,7 @@ import LoginPage from '../Pages/loginPage.js'
 import DashboardPage from '../Pages/DashboardPage.js'
 import menuPage from '../Pages/menuPage.js'
 import myInfoPage from '../Pages/myInfoPage.js'
+import { fail } from 'assert-plus';
 
 
 const loginPage = new LoginPage()
@@ -15,10 +16,11 @@ const myInfoPages = new myInfoPage()
 describe('orange HRM tests', () => {
   
 
-  it.only('User info update - Success', () => {
+  it('User info update - Success', () => {
 
     loginPage.acessLoginPage()
     loginPage.loginwithAnyUser(userData.userSucess.username, userData.userSucess.password)
+    
 
     dashboardPage.checkDashboard()
 
@@ -30,9 +32,12 @@ describe('orange HRM tests', () => {
     myInfoPages.maritalStatus()
     myInfoPages.bloodtype()
     myInfoPages.saveSubmit()
- 
-    
+
+  })
+  it('check acess invalid', () => {
+    loginPage.acessLoginPage()
+    loginPage.loginwithAnyUser(userData.userFail.username, userData.userFail.password)
+    loginPage.checkAcessInvalid()
   })
   
-
 })
